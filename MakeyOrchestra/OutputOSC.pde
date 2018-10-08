@@ -32,7 +32,7 @@ class OSCOutput extends Output
     
     OscMessage m = new OscMessage(volumeAddress);
     m.add(track);
-    m.add(volume);
+    m.add(map(volume,0,1,0,.85));
     osc.send(m,remote);
   }
   
@@ -44,4 +44,37 @@ class OSCOutput extends Output
     m.add(trigger);
     osc.send(m,remote);
   }
+}
+
+  public class ParsableAd {
+
+    private String fullAd;
+    private String rem;
+
+    public ParsableAd(String str) {
+        this.fullAd = str;
+        this.rem = fullAd;
+    }
+
+    public boolean consume(String p) {
+        if(rem.startsWith(p)){
+          rem = rem.substring(p.length());
+          return true;
+        }
+        return false;
+    }
+    public void skip(){
+      int i = rem.indexOf('/');
+      rem = rem.substring(i);
+    }
+    public int intNSkip(){
+      int i = rem.indexOf('/');
+      int res = parseInt(rem.substring(0,i));
+      rem = rem.substring(min(rem.length()-1,i+1));
+      return res;
+    }
+    public void reset(){rem = fullAd;}
+    public String toString() {return rem;}
+    public int toInt(){return parseInt(rem);}
+
 }

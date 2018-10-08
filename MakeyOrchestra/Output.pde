@@ -69,4 +69,7 @@ class Output
   {
     //to override
   }
+  
+  public void processFB(OscMessage m){
+  }
 }

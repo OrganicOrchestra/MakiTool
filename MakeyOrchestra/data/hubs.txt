@@ -1,5 +1,9 @@
-COM22,18,switch
-#COM7,4,track
+/dev/tty.usbmodemFA1331,8,track
+/dev/tty.usbmodemFA1321,8,track
+/dev/tty.usbmodemFA1341,8,track
+#/dev/tty.usbmodemFD121,8,switch
+#/dev/tty.usbmodemFD121,8,trigger
+#/dev/tty.usbmodemFD121,8,trigger
 #COM5,3,track
 #COM15,2,track
 #COM6,3,trigger

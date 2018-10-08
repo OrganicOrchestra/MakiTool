@@ -18,6 +18,10 @@ class OutputManager
     {
       output = new OSCOutput(numTracks,remoteIP,remotePort,midiName);
     }
+    else if(type.equals("lgml"))
+    {
+      output = new LGMLOutput(numTracks,remoteIP,remotePort,midiName);
+    }
     
     if(output == null)
     {
@@ -42,5 +46,8 @@ class OutputManager
   public void sendTrigger(int trigger)
   {
     for(int i=0;i<outputs.size();i++) outputs.get(i).sendTrigger(trigger);
+ }
+ public void processFB(OscMessage m){
+    for(int i=0;i<outputs.size();i++) outputs.get(i).processFB(m);
  }
 }

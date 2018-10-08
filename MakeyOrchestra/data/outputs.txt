@@ -1,2 +1,2 @@
-live,127.0.0.1,9000,loopMIDI Port
-osc,127.0.0.1,11000
+#live,127.0.0.1,9000,loopMIDI Port
+lgml,100.100.100.3,11000
