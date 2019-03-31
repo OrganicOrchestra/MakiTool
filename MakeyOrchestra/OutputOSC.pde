@@ -11,17 +11,17 @@ class OSCOutput extends Output
     
     println(" > New OSC Output");
     
-    muteAddress = "/orchestra/mute";
-    volumeAddress = "/orchestra/volume";
-    triggerAddress = "/orchestra/trigger";
+    muteAddress = "/mute";
+    volumeAddress = "/volume";
+    triggerAddress = "/trigger";
   }
   
   public  void sendTrackMute(int track, boolean mute)
   {
     if(muteAddress != null && muteAddress.length() == 0) return;
     
-     OscMessage m = new OscMessage(muteAddress);
-    m.add(track);
+     OscMessage m = new OscMessage(muteAddress+track);
+    //m.add(track);
     m.add(mute?1:0);
     osc.send(m,remote);
   }
@@ -30,8 +30,8 @@ class OSCOutput extends Output
   {
     if(volumeAddress.length() == 0) return;
     
-    OscMessage m = new OscMessage(volumeAddress);
-    m.add(track);
+    OscMessage m = new OscMessage(volumeAddress+track);
+    //m.add(track);
     m.add(map(volume,0,1,0,.85));
     osc.send(m,remote);
   }
@@ -40,9 +40,25 @@ class OSCOutput extends Output
   {
     if(triggerAddress.length() == 0) return;
     
-    OscMessage m = new OscMessage(triggerAddress);
-    m.add(trigger);
+    OscMessage m = new OscMessage(triggerAddress+trigger);
+    ///m.add(trigger);
     osc.send(m,remote);
+  }
+  
+  public void processFB(OscMessage m){
+    ParsableAd ad = new ParsableAd(m.addrPattern());
+    println("recieved FB"+m.addrPattern());
+    if(ad.consume(volumeAddress)){
+      println("volume ");
+      int num = ad.intNSkip();
+      println("volume : "+num);
+      hubManager.setTrackVolumeFB(num,m.get(0).floatValue());
+    }
+    else if(ad.consume(muteAddress)){
+      int num = ad.intNSkip();
+      hubManager.setTrackActiveFB(num,m.get(0).intValue()>0);
+    }
+
   }
 }
 
@@ -69,6 +85,7 @@ class OSCOutput extends Output
     }
     public int intNSkip(){
       int i = rem.indexOf('/');
+      if(i==-1){i=rem.length()-1;}
       int res = parseInt(rem.substring(0,i));
       rem = rem.substring(min(rem.length()-1,i+1));
       return res;

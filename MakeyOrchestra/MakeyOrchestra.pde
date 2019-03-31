@@ -39,7 +39,7 @@ void setup()
   frameRate(40);
   background(0);
   
-  osc = new OscP5(this,6400);
+  osc = new OscP5(this,12000);
   
   println("Makey Orchestra, connected ports :");
   println(Serial.list());

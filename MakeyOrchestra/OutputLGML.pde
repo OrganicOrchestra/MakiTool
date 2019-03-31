@@ -1,7 +1,7 @@
 class LGMLOutput extends OSCOutput
 {
   int numPerLoop = 8;
-  
+  float lgml_0db = 0.8;
   public LGMLOutput(int numTracks, String remoteIP, int remotePort, String midiDeviceName)
   {
     super(numTracks,remoteIP,remotePort,midiDeviceName);
@@ -33,7 +33,7 @@ class LGMLOutput extends OSCOutput
   {
     String adr = getTrackAddr(track)+"/volume";
      OscMessage m = new OscMessage(adr);
-      m.add(map(volume,0,1,0,.85));
+      m.add(map(volume,0,1,0,lgml_0db));
       sendMessage(m);
   }
   
@@ -63,7 +63,7 @@ class LGMLOutput extends OSCOutput
         }
         else if (ad.consume("volume")){
           //println("process",ad.toString(),lnum,tnum,mnum);
-          hubManager.setTrackVolumeFB(mnum,map(m.get(0).floatValue(),0,0.85,0,1));
+          hubManager.setTrackVolumeFB(mnum,map(m.get(0).floatValue(),0,lgml_0db,0,1));
       }
       }
       

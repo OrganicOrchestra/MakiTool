@@ -22,6 +22,7 @@ class OutputManager
     {
       output = new LGMLOutput(numTracks,remoteIP,remotePort,midiName);
     }
+
     
     if(output == null)
     {
